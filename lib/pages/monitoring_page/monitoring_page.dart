@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:monitoring_service/tambahservice_page.dart';
+import 'package:monitoring_service/pages/tambahservice_page/tambahservice_page.dart';
 import 'package:window_manager/window_manager.dart';
 
 class MonitoringPage extends StatelessWidget {

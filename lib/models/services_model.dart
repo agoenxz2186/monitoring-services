@@ -1,3 +1,7 @@
+import 'package:monitoring_service/helpers/encryption_services.dart';
+
+const String KEYPASSWORD = 'klajshdklSDA!@F3234%34iol8yu9sdhifnkjehnril6tuhn34k5j6n';
+
 class ServiceModel {
   final int? id;
   final String? url;
@@ -35,7 +39,7 @@ class ServiceModel {
       ipserver: map['ipserver'] as String?,
       port: map['port'] as String?,
       username: map['username'] as String?,
-      password: map['password'] as String?,
+      password: EncryptionService.encrypt( '${map['password']}', KEYPASSWORD),
       containerName: map['container_name'] as String?,
       createdAt: map['created_at'] as String?,
       updatedAt: map['updated_at'] as String?,
@@ -52,7 +56,7 @@ class ServiceModel {
       'ipserver': ipserver,
       'port': port,
       'username': username,
-      'password': password,
+      'password': EncryptionService.decrypt(  password ?? '', KEYPASSWORD),
       'container_name': containerName,
       'created_at': createdAt,
       'updated_at': updatedAt,

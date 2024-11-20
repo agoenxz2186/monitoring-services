@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:monitoring_service/helpers/encryption_services.dart';
-import 'package:monitoring_service/monitoring_page.dart';
+import 'package:monitoring_service/pages/monitoring_page/monitoring_page.dart';
 import 'package:window_manager/window_manager.dart'; 
 
 void main() async {
