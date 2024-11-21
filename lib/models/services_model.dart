@@ -1,8 +1,11 @@
 import 'package:monitoring_service/helpers/encryption_services.dart';
+import 'package:monitoring_service/models/model.dart';
 
 const String KEYPASSWORD = 'klajshdklSDA!@F3234%34iol8yu9sdhifnkjehnril6tuhn34k5j6n';
 
-class ServiceModel {
+class ServiceModel extends Model {
+ 
+
   final int? id;
   final String? url;
   final String? servicename;
@@ -14,6 +17,9 @@ class ServiceModel {
   final String? createdAt;
   final String? containerName;
   final String? updatedAt;
+  
+  @override
+  String get table => 'services';
 
   ServiceModel({
     this.id,
@@ -39,7 +45,7 @@ class ServiceModel {
       ipserver: map['ipserver'] as String?,
       port: map['port'] as String?,
       username: map['username'] as String?,
-      password: EncryptionService.encrypt( '${map['password']}', KEYPASSWORD),
+      password: EncryptionService.decrypt( '${map['password']}', KEYPASSWORD),
       containerName: map['container_name'] as String?,
       createdAt: map['created_at'] as String?,
       updatedAt: map['updated_at'] as String?,
@@ -56,7 +62,7 @@ class ServiceModel {
       'ipserver': ipserver,
       'port': port,
       'username': username,
-      'password': EncryptionService.decrypt(  password ?? '', KEYPASSWORD),
+      'password': EncryptionService.encrypt(  password ?? '', KEYPASSWORD),
       'container_name': containerName,
       'created_at': createdAt,
       'updated_at': updatedAt,

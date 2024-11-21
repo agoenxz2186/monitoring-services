@@ -35,6 +35,8 @@ class EncryptionService {
 
   // Fungsi untuk dekripsi
   static String decrypt(String encryptedDataStr, String password) {
+    if(encryptedDataStr.trim() =="")return "";
+    
     try {
       // Parse string menjadi objek EncryptedData
       final encryptedData = EncryptedData.fromString(encryptedDataStr);
@@ -48,7 +50,7 @@ class EncryptionService {
       final decrypted = encrypter.decrypt(encrypted, iv: iv);
       return decrypted;
     } catch (e) {
-      print('Decryption error: $e');
+      print('Decryption error: ($encryptedDataStr) $e');
       return '';
     }
   }

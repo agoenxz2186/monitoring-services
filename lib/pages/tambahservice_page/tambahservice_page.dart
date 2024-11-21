@@ -3,15 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:monitoring_service/input_formatter/urlinputformatter.dart';
+import 'package:monitoring_service/models/services_model.dart';
 import 'package:monitoring_service/pages/tambahservice_page/tambahservice_controller.dart';
 import 'package:quickalert/quickalert.dart';
 
 class TambahservicePage extends StatelessWidget {
-  const TambahservicePage({super.key});
+  final ServiceModel? model;
+  const TambahservicePage({super.key, this.model});
 
   @override
   Widget build(BuildContext context) {
     final ctrl = Get.put(TambahserviceController());
+
+    if(model == null){
+      ctrl.newData();
+    }else{
+      ctrl.showData(model ?? ServiceModel());
+    }
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -21,7 +29,7 @@ class TambahservicePage extends StatelessWidget {
           Obx( () {
               return Container(
                 width: MediaQuery.of(context).size.width * 0.5,
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -105,24 +113,40 @@ class TambahservicePage extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Column( 
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                    Text('Username:'),
+                                    const Text('Username:'),
                                     TextFormField(
                                       enabled: !ctrl.loading.value,
                                       controller: ctrl.txtUserName,
-                                    ),
+                                    ), 
                                 ],
                               ),
                             ),
-                            SizedBox(width: 10,),
+                            const SizedBox(width: 10,),
                             Expanded(
                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                    Text('Password:'),
+                                    const Text('Password:'),
                                     TextFormField(
                                       enabled: !ctrl.loading.value,
                                       controller: ctrl.txtPassword,
                                       obscureText: true,
+                                    ),
+                                ],
+                              ),
+                            ),
+
+                            const SizedBox(width: 10,),
+                            Expanded(
+                              child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                    const Text('Nama Container:'),
+                                    TextFormField(
+                                      enabled: !ctrl.loading.value,
+                                      controller: ctrl.txtContainerName, 
                                     ),
                                 ],
                               ),
@@ -140,7 +164,16 @@ class TambahservicePage extends StatelessWidget {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white),
                             onPressed: ctrl.loading.value == true ? null : (){
-              
+                              ctrl.simpan().then((e){
+                                if(e){
+                                  Get.back();
+                                  Get.snackbar("Simpan Data", "Service berhasil ditambahkan");
+                                }else{
+                                  QuickAlert.show(context: context, type: QuickAlertType.warning,
+                                    title: 'Simpan Data',
+                                    text: 'Data gagal disimpan');
+                                }
+                              });
               
                           }, child: const Text('Simpan')),
               
@@ -154,10 +187,7 @@ class TambahservicePage extends StatelessWidget {
                                       text: 'Koneksi ke ${ctrl.txtAlamatIPServer.value.text} berhasil'
                                     );
                                 }else{
-                                      QuickAlert.show(context: context, type: QuickAlertType.warning,
-                                      title: 'Tes Koneksi',
-                                      text: 'Koneksi ke ${ctrl.txtAlamatIPServer.value.text} gagal'
-                                    );
+                                   
                                 }
                               });
                           }, child: ctrl.loading.value == true ? const CupertinoActivityIndicator() : const Text('Test Connection'))

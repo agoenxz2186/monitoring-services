@@ -1,5 +1,5 @@
-
-import 'package:sqflite/sqflite.dart';
+ 
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DB{
   static DB ? _instance;
@@ -15,7 +15,7 @@ class DB{
 
   Future<Database?> connection()async {
     if(DB._db == null){
-        final _conn = await databaseFactory.openDatabase("db.db",
+        final _conn = await databaseFactoryFfi.openDatabase("db.db",
         options: OpenDatabaseOptions(
           version: 1,
           onCreate: (db, version) {

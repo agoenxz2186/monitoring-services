@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:monitoring_service/helpers/encryption_services.dart';
+import 'package:monitoring_service/pages/main_controller.dart';
 import 'package:monitoring_service/pages/monitoring_page/monitoring_page.dart';
 import 'package:window_manager/window_manager.dart'; 
 
@@ -44,16 +46,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final ctrl = Get.put(MainController());
+    ctrl.cekKoneksiInternet();
+
     return GetMaterialApp(
       title: "Monitoring Service",
       debugShowCheckedModeBanner: false,
+      scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch}),
       theme: ThemeData(
         primarySwatch: Colors.blue,
         inputDecorationTheme: InputDecorationTheme(
           isDense: true,
           filled: true,
           fillColor: Colors.white,
-          contentPadding: EdgeInsets.all(9),
+          contentPadding: const EdgeInsets.all(9),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: Color.fromARGB(255, 77, 76, 76)),
